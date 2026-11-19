@@ -1,0 +1,28 @@
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw"
+PROCESSED_DATA_DIR = PROJECT_ROOT / "data" / "processed"
+
+RANDOM_SEED = 42
+NUM_MEMBERS = 2000
+
+DATA_START_DATE = "2025-01-01"
+DATA_END_DATE = "2026-11-18"
+
+SNAPSHOT_DATE = "2026-09-30"
+FEATURE_WINDOW_DAYS = 90
+CHURN_PREDICTION_WINDOW_DAYS = 30
+
+DB_NAME = "gym_fitness_db"
+DB_HOST = "localhost"
+DB_PORT = 5432
+DB_USER = "postgres"
+
+# Feature engineering configuration
+FEATURE_START_DATE = "2026-07-02"
+FEATURE_END_DATE = "2026-09-30"
+
+MINIMUM_ATTENDANCE_DAYS = 90
+CHURN_LABEL_WINDOW_DAYS = 30

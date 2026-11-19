@@ -1,19 +1,41 @@
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
 .venv/
 venv/
 
-# Environment variables and secrets
+# Environment variables
 .env
 .env.*
+!.env.example
 
 # Editors
 .vscode/
-
-# OS files
 .DS_Store
 Thumbs.db
 
 # Generated data
+data/raw/*
+!data/raw/README.md
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/README.md
+!data/processed/.gitkeep
+
+# Logs and ML artifacts
 *.log
+mlruns/
+artifacts/
+models/*.pkl
+models/*.joblib
+
+# Testing and cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local backup files
+*.bak
+*.backup
+
+*.bak*

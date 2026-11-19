@@ -1,0 +1,43 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ai-gym-intelligence:latest
+    container_name: ai-gym-api
+    env_file:
+      - .env
+    command:
+      - uvicorn
+      - python.api.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ai-gym-intelligence:latest
+    container_name: ai-gym-dashboard
+    command:
+      - streamlit
+      - run
+      - dashboards/app.py
+      - --server.address
+      - 0.0.0.0
+      - --server.port
+      - "8501"
+      - --server.headless
+      - "true"
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    environment:
+      API_BASE_URL: http://api:8000
+    depends_on:
+      - api
