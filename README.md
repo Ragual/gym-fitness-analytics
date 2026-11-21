@@ -1,7 +1,15 @@
-@'
-# Gym & Fitness Analytics Platform
+﻿# Gym & Fitness Analytics Platform
 
 An end-to-end gym intelligence platform built with PostgreSQL, Python, machine learning, FastAPI, and Streamlit. It transforms gym membership, attendance, payment, and workout data into actionable business insights.
+
+## Live Demo
+
+- **Dashboard:** https://ai-gym-intelligence-dashboard.onrender.com
+- **API Documentation:** https://ai-gym-intelligence-api.onrender.com/docs
+- **API Base URL:** https://ai-gym-intelligence-api.onrender.com
+
+> The project uses synthetic gym data. Render free-tier services may take a little time to wake up after inactivity.
+
 
 ## Overview
 
