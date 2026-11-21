@@ -1,0 +1,19 @@
+{
+    "total_members": 549,
+    "average_attendance": 25.64,
+    "average_workout_sessions": 25.64,
+    "overall_churn_rate": 2.73,
+    "segment_sizes": {
+        "0": 93,
+        "1": 249,
+        "2": 177,
+        "3": 30
+    },
+    "recommendation_distribution": {
+        "Goal-focused training": 305,
+        "Progressive overload plan": 73,
+        "Balanced fitness plan": 72,
+        "Beginner consistency plan": 59,
+        "Re-engagement workout": 40
+    }
+}

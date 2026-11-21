@@ -1,65 +1,74 @@
+@'
+# Gym & Fitness Analytics Platform
 
-# Gym & Fitness Analytics Database
+An end-to-end gym intelligence platform built with PostgreSQL, Python, machine learning, FastAPI, and Streamlit. It transforms gym membership, attendance, payment, and workout data into actionable business insights.
 
-A PostgreSQL-based relational database project designed to manage gym operations and analyze fitness activities using SQL and Python.
+## Overview
 
-## Project Overview
+The platform helps gym operators understand member activity, identify members who may be at risk of becoming inactive, analyze member segments, and generate workout recommendations.
 
-This project aims to develop a structured database system for a gym, covering member management, trainer information, membership subscriptions, exercise records, and workout tracking.
+It includes a relational database, automated data pipelines, machine learning models, a REST API, and an interactive dashboard.
 
-The database will also support analytical queries to generate insights into gym operations and member workout patterns.
+## Features
 
-## Objectives
-
-- Design a normalized relational database.
-- Manage gym members, trainers, and memberships.
-- Track workout sessions and exercise performance.
-- Perform SQL-based business analytics.
-- Generate realistic sample data using Python.
-- Build a fitness analytics dashboard.
+- **Relational database:** PostgreSQL database with seven core operational tables.
+- **Data generation:** Realistic synthetic gym data generated using Python.
+- **ETL pipeline:** Data generation, validation, database loading, and feature engineering.
+- **Data quality:** Automated checks for data integrity and consistency.
+- **Churn intelligence:** Machine learning model to estimate member inactivity risk.
+- **Member segmentation:** K-Means clustering to identify different member behavior groups.
+- **Workout recommendations:** Rule-based workout recommendations based on member activity and goals.
+- **Analytics assistant:** Natural-language questions answered using verified project analytics, with optional Gemini integration.
+- **REST API:** FastAPI endpoints for churn prediction and analytics questions.
+- **Interactive dashboard:** Streamlit interface for exploring gym performance and member insights.
+- **Docker support:** Containerized PostgreSQL, API, and dashboard services.
 
 ## Technology Stack
 
 | Technology | Purpose |
 |---|---|
-| PostgreSQL | Relational database |
-| SQL | Database querying and analytics |
-| Python | Data generation and automation |
-| Git | Version control |
-| GitHub | Project hosting |
-| Power BI / Tableau | Data visualization |
+| Python | Data processing and application logic |
+| PostgreSQL 16 | Relational database |
+| SQL | Database design and analytics |
+| Pandas / NumPy | Data manipulation |
+| Scikit-learn | Machine learning |
+| FastAPI | REST API |
+| Streamlit | Interactive dashboard |
+| Docker / Docker Compose | Containerization |
+| Pytest | Automated testing |
+| Gemini API | AI-assisted analytics explanations |
+| Git / GitHub | Version control |
 
-## Database Schema
-
-The project will contain seven core tables:
-
-1. members
-2. trainers
-3. membership_plans
-4. memberships
-5. exercises
-6. workout_sessions
-7. workout_logs
-
-## Project Structure
+## Architecture
 
 ```text
-gym-fitness-analytics/
-├── database/
-├── data/
-├── queries/
-├── python/
-├── dashboards/
-├── docs/
-├── .gitignore
-└── README.md
-```
-
-## Development Status
-
-🚧 Currently in development.
-
-## Author
-
-Ragual
-
+             Synthetic Gym Data
+                     |
+                     v
+             Python Data Pipeline
+                     |
+                     v
+                PostgreSQL
+                     |
+                     v
+            Feature Engineering
+                     |
+          +----------+----------+
+          |          |          |
+          v          v          v
+       Churn      Member     Workout
+       Model    Segmentation Recommendations
+          |          |          |
+          +----------+----------+
+                     |
+              Processed Analytics
+                     |
+             +-------+-------+
+             |               |
+             v               v
+          FastAPI         Streamlit
+             |               |
+             +-------+-------+
+                     |
+              Gemini Assistant
+              (Optional AI layer)

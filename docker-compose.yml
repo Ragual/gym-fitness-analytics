@@ -1,4 +1,28 @@
+
 services:
+  db:
+    image: postgres:16
+    container_name: ai-gym-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      POSTGRES_DB: ${DB_NAME:-gym_fitness_db}
+    ports:
+      - "5433:5432"
+    volumes:
+      - gym_fitness_postgres_data:/var/lib/postgresql/data
+      - ./database/02_create_tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql:ro
+      - ./database/migrations/001_add_ai_platform_tables.sql:/docker-entrypoint-initdb.d/02_ai_platform.sql:ro
+      - ./database/03_constraints_indexes.sql:/docker-entrypoint-initdb.d/03_constraints_indexes.sql:ro
+      - ./database/04_insert_reference_data.sql:/docker-entrypoint-initdb.d/04_reference_data.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   api:
     build:
       context: .
@@ -7,6 +31,12 @@ services:
     container_name: ai-gym-api
     env_file:
       - .env
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-gym_fitness_db}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
     command:
       - uvicorn
       - python.api.main:app
@@ -17,6 +47,9 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
 
   dashboard:
     build:
@@ -41,3 +74,7 @@ services:
       API_BASE_URL: http://api:8000
     depends_on:
       - api
+
+volumes:
+  gym_fitness_postgres_data:
+

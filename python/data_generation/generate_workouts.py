@@ -13,7 +13,7 @@ from python.data_generation.config import (
 
 random.seed(RANDOM_SEED)
 
-TRAINER_IDS = [1, 2, 3, 4, 5]
+TRAINER_IDS = [1, 2, 3, 4]
 
 
 def generate_workouts():
@@ -80,3 +80,4 @@ def generate_workouts():
 
 if __name__ == "__main__":
     generate_workouts()
+

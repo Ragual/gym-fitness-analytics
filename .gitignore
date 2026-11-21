@@ -4,7 +4,7 @@ __pycache__/
 .venv/
 venv/
 
-# Environment variables
+# Environment variables and secrets
 .env
 .env.*
 !.env.example
@@ -14,20 +14,31 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Generated data
+# Generated raw data
 data/raw/*
 !data/raw/README.md
 !data/raw/.gitkeep
+
+# Generated processed data
 data/processed/*
 !data/processed/README.md
 !data/processed/.gitkeep
+!data/processed/member_features.csv
+!data/processed/member_segments.csv
+!data/processed/workout_recommendations.csv
+!data/processed/segment_profiles.csv
 
 # Logs and ML artifacts
 *.log
 mlruns/
-artifacts/
+artifacts/*
+!artifacts/model_evaluation.json
+!artifacts/workout_insights.json
+
+# Models
 models/*.pkl
 models/*.joblib
+!models/churn_model.joblib
 
 # Testing and cache
 .pytest_cache/
@@ -37,5 +48,5 @@ models/*.joblib
 # Local backup files
 *.bak
 *.backup
-
 *.bak*
+
