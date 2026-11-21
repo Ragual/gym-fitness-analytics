@@ -1,4 +1,6 @@
-﻿services:
+﻿
+services:
+  # FastAPI backend
   - type: web
     name: ai-gym-intelligence-api
     runtime: docker
@@ -8,3 +10,16 @@
     envVars:
       - key: GEMINI_API_KEY
         sync: false
+
+  # Streamlit dashboard
+  - type: web
+    name: ai-gym-intelligence-dashboard
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerCommand: streamlit run dashboards/app.py --server.address 0.0.0.0 --server.port 10000 --server.headless true
+    envVars:
+      - key: API_BASE_URL
+        value: https://ai-gym-intelligence-api.onrender.com
+      - key: PORT
+        value: "10000"
