@@ -115,3 +115,29 @@ def test_assistant_empty_question():
     result = answer_question("")
 
     assert result["source"] == "input_validation"
+
+def test_assistant_gemini_failure_uses_analytics_fallback(monkeypatch):
+    from python.api import main
+
+    def simulate_gemini_failure(question, analytics):
+        raise TimeoutError("Simulated Gemini timeout")
+
+    monkeypatch.setattr(
+        main,
+        "generate_ai_answer",
+        simulate_gemini_failure,
+    )
+
+    response = client.post(
+        "/assistant/ask",
+        json={"question": "How many members are in the analytics cohort?"},
+    )
+
+    assert response.status_code == 200
+
+    result = response.json()
+
+    assert result["mode"] == "analytics_fallback"
+    assert result["source"] == "member_features"
+    assert "549" in result["answer"]
+    assert result["fallback_reason"] == "Gemini temporarily unavailable"

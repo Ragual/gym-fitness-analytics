@@ -132,7 +132,7 @@ def health_check():
         "status": "healthy",
         "gemini_configured": bool(os.getenv("GEMINI_API_KEY")),
         "gemini_model": GEMINI_MODEL,
-        "ai_mode": "required",
+        "ai_mode": "optional_with_analytics_fallback",
     }
 
 
@@ -149,6 +149,7 @@ def churn_prediction(member: MemberFeatures):
 
     except Exception:
         logger.exception("Churn prediction failed.")
+
         raise HTTPException(
             status_code=500,
             detail="Prediction failed. Check API logs.",
@@ -157,16 +158,19 @@ def churn_prediction(member: MemberFeatures):
 
 @app.post("/assistant/ask")
 def ask_assistant(request: AssistantQuestion):
+    # Step 1: Retrieve verified analytics.
     try:
         analytics = answer_question(request.question)
 
     except Exception:
         logger.exception("Analytics retrieval failed.")
+
         raise HTTPException(
             status_code=500,
             detail="Could not retrieve verified analytics.",
         )
 
+    # Step 2: Try Gemini AI.
     try:
         ai_answer = generate_ai_answer(
             request.question,
@@ -182,17 +186,25 @@ def ask_assistant(request: AssistantQuestion):
             "model": GEMINI_MODEL,
         }
 
+    # Step 3: Use deterministic analytics if Gemini fails.
     except Exception as error:
         logger.exception(
             "Gemini generation failed: %s",
             type(error).__name__,
         )
 
-        raise HTTPException(
-            status_code=503,
-            detail=(
-                "Gemini is temporarily unavailable. "
-                "No fallback answer was generated. "
-                "Please try again later."
-            ),
+        fallback_answer = analytics.get(
+            "answer",
+            "AI assistance is temporarily unavailable. Please try again later.",
         )
+
+        logger.warning(
+            "Returning deterministic analytics fallback."
+        )
+
+        return {
+            "answer": fallback_answer,
+            "source": analytics.get("source", "analytics"),
+            "mode": "analytics_fallback",
+            "fallback_reason": "Gemini temporarily unavailable",
+        }
